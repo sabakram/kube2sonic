@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fpm-frr
+spec:
+  template:
+    metadata:
+      labels:
+        name: fpm-frr
+    spec:
+      hostname: worker1
+      hostNetwork: true
+      containers:
+      - name: fpm-frr
+        image: docker-fpm-frr:latest
+        name: fpm-frr
+        tty: true
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: worker1
+          mountPath: /etc/sonic
+          readOnly: true
+        - name: python
+          mountPath: /usr/lib/python3/dist-packages/arista
+          readOnly: true
+        - name: hwsku
+          mountPath: /usr/share/sonic/hwsku
+          readOnly: true
+        - name: platform
+          mountPath: /usr/share/sonic/platform
+          readOnly: true
+        - name: redis
+          mountPath: /var/run/redis
+          readOnly: false
+        imagePullPolicy: IfNotPresent
+      volumes:
+      - name: worker1
+        hostPath:
+          path: /etc/sonic
+      - name: python
+        hostPath:
+          path: /usr/lib/python3/dist-packages/arista
+      - name: hwsku
+        hostPath:
+          path: /usr/share/sonic/device/x86_64-dell_s6000_s1220-r0/Force10-S6000
+      - name: platform
+        hostPath:
+          path: /usr/share/sonic/device/x86_64-dell_s6000_s1220-r0
+      - name: redis
+        hostPath:
+          path: /var/run/redis
+      nodeSelector:
+        frr_enabled: "true"
+  selector:
+    matchLabels:
+      name: fpm-frr
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1

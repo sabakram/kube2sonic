@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: sonic-mgmnt
+spec:
+  template:
+    metadata:
+      labels:
+        name: sonic-mgmnt
+    spec:
+      hostname: worker2
+      hostNetwork: true
+      containers:
+      - name: sonic-mgmnt
+        image: docker-sonic-mgmt-framework:latest
+        name: sonic-mgmnt
+        tty: true
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: worker2
+          mountPath: /etc/sonic
+          readOnly: true
+        - name: python
+          mountPath: /usr/lib/python3/dist-packages/arista
+          readOnly: true
+        - name: hwsku
+          mountPath: /usr/share/sonic/hwsku
+          readOnly: true
+        - name: platform
+          mountPath: /usr/share/sonic/platform
+          readOnly: true
+        - name: redis
+          mountPath: /var/run/redis
+          readOnly: false
+        imagePullPolicy: IfNotPresent
+      volumes:
+      - name: worker2
+        hostPath:
+          path: /etc/sonic
+      - name: python
+        hostPath:
+          path: /usr/lib/python3/dist-packages/arista
+      - name: hwsku
+        hostPath:
+          path: /usr/share/sonic/device/x86_64-dell_s6000_s1220-r0/Force10-S6000
+      - name: platform
+        hostPath:
+          path: /usr/share/sonic/device/x86_64-dell_s6000_s1220-r0
+      - name: redis
+        hostPath:
+          path: /var/run/redis
+      nodeSelector:
+        mgmnt_enabled: "true"
+  selector:
+    matchLabels:
+      name: sonic-mgmnt
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
