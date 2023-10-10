@@ -43,7 +43,8 @@ sudo systemctl restart docker
 
 # Install kubelet, kubeadm, and kubectl
 sudo apt-get update -y
-sudo apt-get install -y apt-transport-https curl gpg-agent jq
+sudo apt-get install -y gpg-agent
+sudo apt-get install -y apt-transport-https curl gpg-agent
 
 # Add Kubernetes repository
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
@@ -52,5 +53,5 @@ deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF'
 
 sudo apt-get update
-sudo apt-get install -y kubelet="$KUBERNETES_VERSION" kubeadm="$KUBERNETES_VERSION" kubectl="$KUBERNETES_VERSION" kubernetes-cni=0.8.7-00
+sudo apt-get install -y kubelet=$KUBERNETES_VERSION kubeadm=$KUBERNETES_VERSION kubectl=$KUBERNETES_VERSION kubernetes-cni=0.8.7-00
 sudo apt-mark hold kubelet kubeadm kubectl
