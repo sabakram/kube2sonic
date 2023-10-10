@@ -43,7 +43,8 @@ sudo systemctl restart docker
 
 # Install kubelet, kubeadm, and kubectl
 sudo apt-get update -y
-sudo apt-get install -y apt-transport-https curl gpg-agent jq
+sudo apt-get install -y gpg-agent
+sudo apt-get install -y apt-transport-https curl gpg-agent
 
 # Add Kubernetes repository
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
