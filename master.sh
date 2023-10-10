@@ -66,3 +66,8 @@ sudo apt-mark hold kubelet kubeadm kubectl
 # Intialize Master
 
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --kubernetes-version=v1.22.2 --v=5
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+# Apply CNI-Network Addons
+kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml  
