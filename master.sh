@@ -7,6 +7,12 @@ set -euxo pipefail
 # Variables
 KUBERNETES_VERSION="1.22.2-00"
 
+# Install Docker
+sudo apt-get update
+sudo apt-get install -y docker.io
+docker --version
+sudo systemctl start docker
+sudo systemctl enable docker
 
 # Disable swap
 sudo swapoff -a
@@ -43,6 +49,7 @@ sudo systemctl restart docker
 
 # Install kubelet, kubeadm, and kubectl
 sudo apt-get update -y
+
 sudo apt-get install -y gpg-agent
 sudo apt-get install -y apt-transport-https curl gpg-agent
 
