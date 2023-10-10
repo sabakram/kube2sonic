@@ -56,3 +56,6 @@ sudo apt-get update
 sudo apt-get install -y kubelet="$KUBERNETES_VERSION" kubeadm="$KUBERNETES_VERSION" kubectl="$KUBERNETES_VERSION" kubernetes-cni=0.8.7-00
 sudo apt-mark hold kubelet kubeadm kubectl
 
+# Intialize Master
+
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --kubernetes-version=v1.22.2 --v=5
