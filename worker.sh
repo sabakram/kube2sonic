@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Kubernetes Master Node Setup Script
+# Kubernetes Worker Node Setup Script
 
 set -euxo pipefail
 
